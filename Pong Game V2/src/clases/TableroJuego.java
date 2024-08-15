@@ -102,12 +102,12 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         
         g1.drawString(Integer.toString(pelota.getScore1()), (float) getBounds().getCenterX() - 45, 30);
         g2.drawString(Integer.toString(pelota.getScore2()), (float) getBounds().getCenterX() + 25, 30);
-        if (pelota.getScore1() == 5 || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() > pelota.getScore2())) {
+        if (pelota.getScore1() >= 7 && (pelota.getScore1() - pelota.getScore2()) >= 2 || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() > pelota.getScore2())) {
         	String texto = "GANÓ EL JUGADOR 1";
         	dibujarTextoCentrado(g, texto);
             Pelota.finJuego = true;
         }
-        if (pelota.getScore2() == 5 || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() < pelota.getScore2())) {
+        if (pelota.getScore2() >= 7 && (pelota.getScore2() - pelota.getScore1()) >= 2|| (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() < pelota.getScore2())) {
             String texto = "GANÓ EL JUGADOR 2";
         	dibujarTextoCentrado(g, texto);
             Pelota.finJuego = true;

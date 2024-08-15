@@ -16,8 +16,7 @@ public class Temporizador {
     }
 
     public Temporizador(TemporizadorListener listener) {
-    	int tiempoDelPartido=10000;
-    	
+        int tiempoDelPartido = 120000;
         this.tiempoRestante = tiempoDelPartido / 1000; // tiempo en segundos
         this.listener = listener;
 
@@ -49,5 +48,4 @@ public class Temporizador {
     public static int getTiempoRestante() {
         return tiempoRestante;
     }
-    
 }
