@@ -13,42 +13,37 @@ import javax.swing.JPanel;
 
 
 
-
 public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
     
-    Pelota pelota = new Pelota(0,0);
+    Pelota pelota = new Pelota(392, 240);
     Raqueta r1 = new Raqueta(10,200);
     Raqueta r2 = new Raqueta(786-10-Raqueta.ANCHO,200);
     
     
     public TableroJuego(){
-        setBackground(new Color(153, 0, 204));
+setBackground(new Color(153, 0, 204));
         
         setLayout(null);
     }
     
     
+  
     @Override
-    public void paintComponent(Graphics g){ // este método es el que nos va a dibujar las dos raquetas y la pelota
-      
+    public void paintComponent(Graphics g) { // este método es el que nos va a dibujar las dos raquetas y la pelota
         super.paintComponent(g); // esto ejecuta el método de la clase padre, como si fuera un activador o un "ON"
-        Graphics2D g2 = (Graphics2D)g; // Graphics2D permite usar más funciones de aspecto que Graphics solo
+        Graphics2D g2 = (Graphics2D) g; // Graphics2D permite usar más funciones de aspecto que Graphics solo
         g2.setColor(Color.white);
-       
 
-        dibujarPuntaje(g2);       
-        dibujarTiempoRestante(g2);
-          
+        dibujarPuntaje(g2);
+        dibujarTiempo(g2); // Cambiar esta línea
         dibujar(g2);
         actualizar();
-        
     }
     
    
-    
-    
     public void dibujar(Graphics2D g){
-        // Dibuja la línea del medio
+       
+    	// Dibuja la línea del medio
         Line2D.Double linea = new Line2D.Double(getBounds().getCenterX(), 0, getBounds().getCenterX(), getBounds().getMaxY());
         g.draw(linea); // Imprime la línea del medio
         
@@ -61,7 +56,7 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         g.fill(r1.getRaqueta()); // Dibuja r1 en azul
         g.setColor(new Color(213,55,197));
         g.fill(r2.getRaqueta()); // Dibuja r2 en blanco
-    }
+    } 
     
     public void actualizar(){
         
@@ -96,6 +91,27 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         g.drawString("Tiempo restante: " + Temporizador.getTiempoRestante() + " segundos", 10, getHeight() - 10);
     }
     
+    private void dibujarTiempo(Graphics2D g) {
+        Font tiempoFont = new Font("Arial", Font.BOLD, 30);
+        g.setFont(tiempoFont);
+        g.setColor(new Color(255, 255, 255, 150)); // Color blanco con 60% de opacidad
+
+        // Determinar el texto basado en el tiempo restante
+        String tiempoTexto = "";
+        if (Temporizador.getTiempoRestante() > 60) {
+            tiempoTexto = "1°";
+        } else if (Temporizador.getTiempoRestante() <= 60 && Temporizador.getTiempoRestante() > 5) {
+            tiempoTexto = "2°";
+        }
+
+        FontMetrics metrics = g.getFontMetrics();
+        int x = (getWidth() - metrics.stringWidth(tiempoTexto)) / 2;
+        int y = (getHeight() + metrics.getAscent()) / 2;
+
+        g.drawString(tiempoTexto, x, y);
+    }
+
+
     
     private void dibujarPuntaje (Graphics2D g){
         
@@ -106,8 +122,9 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         
         g1.drawString(Integer.toString(pelota.getScore1()), (float) getBounds().getCenterX() - 45, 30);
         g2.drawString(Integer.toString(pelota.getScore2()), (float) getBounds().getCenterX() + 25, 30);
+        
         if ((pelota.getScore1() >= 7 && (pelota.getScore1() - pelota.getScore2()) >= 2) || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() > pelota.getScore2())) {
-        	String texto = "GANÓ EL JUGADOR 1"; 
+        	String texto = "GANÓ EL JUGADOR 1";
         	dibujarTextoCentrado(g, texto);
             Pelota.finJuego = true;
         }
@@ -126,7 +143,6 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
 
     
     
-    
     private void dibujarTextoCentrado(Graphics2D g, String texto) {
     	// Obtener el FontMetrics para medir el ancho del texto
         FontMetrics metrics = g.getFontMetrics(g.getFont());
@@ -138,4 +154,6 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         int y = (int) (getBounds().getCenterY() - metrics.getHeight() / 2);
         g.drawString(texto, x, y);
     }
+
+    
 }

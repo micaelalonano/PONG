@@ -12,7 +12,7 @@ public class Temporizador {
     private boolean enPausa = false;
     private int tiempoPausa = 6000; // 6 segundos en milisegundos
     private int tiempoPausado = 0;
-    private int tiempoTranscurrido = 0;
+    private static int tiempoTranscurrido = 0;
     static int tiempoDelPartido = 120000; // Tiempo total en milisegundos
 
     public interface TemporizadorListener {
@@ -32,9 +32,9 @@ public class Temporizador {
                 if (enPausa == false) {
                     tiempoTranscurrido++;
                     tiempoRestante--;
-                    
-                    // Si hemos pasado los primeros 5 segundos, iniciar la pausa
-                    if (tiempoTranscurrido == 60) {
+
+                    // Si pasó la mitad del tiempo del partido (PT), iniciar la pausa
+                    if (tiempoTranscurrido == (tiempoDelPartido/1000)/2) {
                         enPausa = true;
                         tiempoPausado = 0; // Reiniciar el contador de pausa
                         timer.setDelay(tiempoPausa); // Establecer el tiempo de pausa
@@ -75,5 +75,13 @@ public class Temporizador {
 
     public static int getTiempoRestante() {
         return tiempoRestante;
+    }
+    
+    public static int getTiempoTranscurrido() {
+        return tiempoTranscurrido;
+    }
+    
+    public static int getTiempoDelPartido() {
+        return tiempoDelPartido;
     }
 }

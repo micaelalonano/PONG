@@ -1,5 +1,6 @@
 package clases;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
@@ -8,7 +9,8 @@ public class Raqueta {
     
     
     private int x,y;
-    static final int ANCHO=10, ALTO=40;
+    static final int ANCHO=8, ALTO=75;
+    private Color color;
     
     
     public Raqueta(int x, int y){
@@ -22,23 +24,65 @@ public class Raqueta {
     
     public void moverR1 (Rectangle limites){ // movimiento de la raqueta 1
         
-        if (EventoTeclado.w && y > limites.getMinY()){
-            y=y-2;
-        }
+    	if(Temporizador.getTiempoRestante() > (Temporizador.getTiempoDelPartido()/1000)/2){
+    		
+    		if (EventoTeclado.w && y > limites.getMinY()){
+                y=y-2;
+            }
+            
+            if (EventoTeclado.s && y < limites.getMaxY()-ALTO){
+                y=y+2;
+            }
+    	}
         
-        if (EventoTeclado.s && y < limites.getMaxY()-ALTO){
-            y=y+2;
-        }
+    	
+    	if(Temporizador.getTiempoRestante() < (Temporizador.getTiempoDelPartido()/1000)/2){
+    		
+    		
+    		if (EventoTeclado.up && y > limites.getMinY()){
+                y=y-2;
+            }
+            
+            if (EventoTeclado.down && y < limites.getMaxY()-ALTO){
+                y=y+2;
+            }
+    	}
+        
         
     }
+        
     
     public void moverR2 (Rectangle limites){// movimiento de la raqueta 2
-        if (EventoTeclado.up && y > limites.getMinY()){
-            y=y-2;
-        }
+
+    	if(Temporizador.getTiempoRestante() > (Temporizador.getTiempoDelPartido()/1000)/2){
+    		
+    		if (EventoTeclado.up && y > limites.getMinY()){
+                y=y-2;
+            }
+            
+            if (EventoTeclado.down && y < limites.getMaxY()-ALTO){
+                y=y+2;
+            }
+    	}
         
-        if (EventoTeclado.down && y < limites.getMaxY()-ALTO){
-            y=y+2;
-        }
+    	
+    	if(Temporizador.getTiempoRestante() < (Temporizador.getTiempoDelPartido()/1000)/2){
+    		
+    		if (EventoTeclado.w && y > limites.getMinY()){
+                y=y-2;
+            }
+            
+            if (EventoTeclado.s && y < limites.getMaxY()-ALTO){
+                y=y+2;
+            }
+    	}
+    }
+    
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

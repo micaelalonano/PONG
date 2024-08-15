@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 public class EventoTeclado extends KeyAdapter { // Esta clase nos permite trabajar con eventos de teclado y detecta si se presionó una tecla
     
     static boolean w, s, up, down;
-   
+    
     
     @Override
     public void keyPressed(KeyEvent e){ // Esta tecla detecta cuando la tecla está siendo presionada, para mover 

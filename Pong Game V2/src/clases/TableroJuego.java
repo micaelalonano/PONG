@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
     
-    Pelota pelota = new Pelota(0,0);
+    Pelota pelota = new Pelota(392, 240);
     Raqueta r1 = new Raqueta(10,200);
     Raqueta r2 = new Raqueta(786-10-Raqueta.ANCHO,200);
     
@@ -29,34 +29,44 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
     @Override
     public void paintComponent(Graphics g){ // este método es el que nos va a dibujar las dos raquetas y la pelota
       
-        super.paintComponent(g); // esto ejecuta el método de la clase padre, como si fuera un activador o un "ON"
-        Graphics2D g2 = (Graphics2D)g; // Graphics2D permite usar más funciones de aspecto que Graphics solo
-        g2.setColor(Color.white);
-       
+    	 super.paintComponent(g);
+    	    Graphics2D g2 = (Graphics2D) g;
 
-        dibujarPuntaje(g2);       
-        dibujarTiempoRestante(g2);
-          
-        dibujar(g2);
-        actualizar();
-        
-    }
+    	    int mitadTiempo = (Temporizador.getTiempoDelPartido() / 1000) / 2;
+
+    	    // Verifica si es la segunda mitad del partido para invertir los colores
+    	    if (Temporizador.getTiempoRestante() < mitadTiempo) {
+    	        r1.setColor(new Color(1, 189, 247));
+    	        r2.setColor(new Color(213,55,197));
+    	    } else {
+    	        r1.setColor(new Color(213,55,197));
+    	        r2.setColor(new Color(1, 189, 247));
+    	    }
+    	    
+    	    g2.setColor(Color.white);
+    	      
+
+    	    dibujarPuntaje(g2);
+    	    dibujarTiempoRestante(g2);
+    	    dibujar(g2);
+    	    actualizar();
+    	}
     
    
     public void dibujar(Graphics2D g){
        
-        //Dibuja la linea del medio
-        Line2D.Double linea = new Line2D.Double(getBounds().getCenterX(), 0, getBounds().getCenterX(), getBounds().getMaxY());
-        g.draw(linea); //imprime la linea del medio
+    	Line2D.Double linea = new Line2D.Double(getBounds().getCenterX(), 0, getBounds().getCenterX(), getBounds().getMaxY());
+        g.draw(linea); // Imprime la línea del medio
         
-        
-        
-        g.fill(pelota.getPelota()); // get Pelota nos retorna un objeto en 2D con las dimensiones que les dimos
-        g.fill (r1.getRaqueta());
-        g.fill (r2.getRaqueta());
-        
-       // System.out.println("x"+getBounds().getMaxX()); // esto nos sirve para ver las dimensiones reales del panel para establecer los limites
-       // System.out.println("x"+getBounds().getMaxY());
+        g.setColor(new Color(255, 255, 255));
+        g.fill(pelota.getPelota()); 
+
+        g.setColor(r1.getColor());
+        g.fill(r1.getRaqueta());
+
+        g.setColor(r2.getColor());
+        g.fill(r2.getRaqueta());
+
     } 
     
     public void actualizar(){
@@ -89,7 +99,23 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
     private void dibujarTiempoRestante(Graphics2D g) {
         Font tiempoFont = new Font("Arial", Font.BOLD, 20);
         g.setFont(tiempoFont);
-        g.drawString("Tiempo restante: " + Temporizador.getTiempoRestante() + " segundos", 10, getHeight() - 10);
+        g.drawString("Tiempo restante: " + Temporizador.getTiempoRestante() + " segundos", 250, getHeight() - 10);
+    }
+    
+    private void dibujarTiempo(Graphics2D g) {
+        Font tiempoFont = new Font("Arial", Font.BOLD, 30);
+        g.setFont(tiempoFont);
+        g.setColor(new Color(255, 255, 255, 150)); // Color blanco con 60% de opacidad
+
+        // Determinar el texto basado en el tiempo restante
+        String tiempoTexto = "";
+        if (Temporizador.getTiempoRestante() > 60) {
+            tiempoTexto = "1°";
+        } else if (Temporizador.getTiempoRestante() <= 60 && Temporizador.getTiempoRestante() > 5) {
+            tiempoTexto = "2°";
+        }
+
+        
     }
     
     
@@ -102,12 +128,12 @@ public class TableroJuego extends JPanel { // Dibujo de las raquetas y la pelota
         
         g1.drawString(Integer.toString(pelota.getScore1()), (float) getBounds().getCenterX() - 45, 30);
         g2.drawString(Integer.toString(pelota.getScore2()), (float) getBounds().getCenterX() + 25, 30);
-        if (pelota.getScore1() >= 7 && (pelota.getScore1() - pelota.getScore2()) >= 2 || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() > pelota.getScore2())) {
+        if ((pelota.getScore1() >= 7 && (pelota.getScore1() - pelota.getScore2()) >= 2) || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() > pelota.getScore2())) {
         	String texto = "GANÓ EL JUGADOR 1";
         	dibujarTextoCentrado(g, texto);
             Pelota.finJuego = true;
         }
-        if (pelota.getScore2() >= 7 && (pelota.getScore2() - pelota.getScore1()) >= 2|| (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() < pelota.getScore2())) {
+        if ((pelota.getScore2() >= 7 && (pelota.getScore2() - pelota.getScore1()) >= 2) || (Temporizador.getTiempoRestante() <= 0 && pelota.getScore1() < pelota.getScore2())) {
             String texto = "GANÓ EL JUGADOR 2";
         	dibujarTextoCentrado(g, texto);
             Pelota.finJuego = true;

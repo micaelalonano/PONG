@@ -3,7 +3,6 @@ package clases;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 
 public class Ventana extends JFrame implements Temporizador.TemporizadorListener {
       
@@ -14,7 +13,7 @@ public class Ventana extends JFrame implements Temporizador.TemporizadorListener
    private Hilo hilo;
    
    private Temporizador temporizador;
-   
+
    
    
     public Ventana (){
@@ -25,23 +24,14 @@ public class Ventana extends JFrame implements Temporizador.TemporizadorListener
         setResizable(false);
         
         lamina = new TableroJuego();
-        getContentPane().add(lamina, BorderLayout.CENTER);
+        getContentPane().add(lamina);
         addKeyListener(new EventoTeclado());
- 
         
         
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        hilo = new Hilo(lamina);
-        
-        JPanel panel = new JPanel();
-        panel.setBounds(0, 0, 330, 30);
-        lamina.add(panel);
-        
-        JPanel panel_1 = new JPanel();
-        panel_1.setBounds(454, 0, 330, 30);
-        lamina.add(panel_1);
+hilo = new Hilo(lamina);
         hilo.start();
         
         temporizador = new Temporizador(this);

@@ -13,7 +13,7 @@ public class Hilo extends Thread { // Esta clase es la responsable de actualizar
         
         this.lamina = lamina;
     }
-  
+    
     
     @Override
     public void run (){
